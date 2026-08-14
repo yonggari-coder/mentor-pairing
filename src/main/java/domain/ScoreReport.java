@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 public class ScoreReport {
     @Id
-    private Long report_id;
+    private Long reportId;
 
-    private Long student_id;
+    private Long studentId;
     private int year;
     private int semester;
 }

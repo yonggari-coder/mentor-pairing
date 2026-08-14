@@ -12,9 +12,9 @@ import java.util.Date;
 @Setter
 public class MentoringApplication { //멘토링 신청 엔티티
     @Id
-    private Long mentoring_id;
+    private Long mentoringId;
 
-    private Long student_id;
+    private Long studentId;
     private String subject;
     private String role;
     private String status;

@@ -14,8 +14,8 @@ public class MentoringProgram {
     @Id
     private Long mentoringProgramId;
 
-    private Long mentor_id;
-    private Long mentee_id;
+    private Long mentorId;
+    private Long menteeId;
 
     private String subject;
     private String status;
