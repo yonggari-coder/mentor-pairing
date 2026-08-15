@@ -2,6 +2,7 @@ package domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,6 @@ public class Student {
     private Long studentId;
     private String email;
     private String name;
+    private String major; //학과
+    private int studyYear; //학년
 }
