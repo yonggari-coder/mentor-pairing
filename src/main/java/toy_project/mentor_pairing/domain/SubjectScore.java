@@ -1,4 +1,4 @@
-package domain;
+package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -11,7 +11,7 @@ public class SubjectScore {
 
     protected SubjectScore (){} //jpa 표준을 위해 기본 생성하자!!
 
-    public SubjectScore(int score){
+    protected SubjectScore(int score){
         this.score = score;
     }
 

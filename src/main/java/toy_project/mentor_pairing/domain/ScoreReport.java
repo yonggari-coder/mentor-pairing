@@ -1,12 +1,10 @@
-package domain;
+package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 public class ScoreReport {
 
     @Id @GeneratedValue
@@ -26,6 +24,14 @@ public class ScoreReport {
     @Embedded
     @AttributeOverride(name="score", column=@Column(name="math_score"))
     private SubjectScore math;
+
+    protected ScoreReport(){}
+
+    public ScoreReport(int korScore, int engScore, int mathScore){
+        this.korean = new SubjectScore(korScore);
+        this.english = new SubjectScore(engScore);
+        this.math = new SubjectScore(mathScore);
+    }
 
     public int sumScore(){
         int sum = 0;
