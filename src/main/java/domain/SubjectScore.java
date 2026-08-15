@@ -1,16 +1,18 @@
 package domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Embeddable
 public class SubjectScore {
-    @Id
-    private Long scoreId;
 
-    private Long reportId;
-    private String subject;
     private int score;
+
+    protected SubjectScore (){} //jpa 표준을 위해 기본 생성하자!!
+
+    public SubjectScore(int score){
+        this.score = score;
+    }
+
 }
