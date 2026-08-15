@@ -1,4 +1,4 @@
-package domain;
+package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,7 +1,6 @@
-package domain;
+package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
