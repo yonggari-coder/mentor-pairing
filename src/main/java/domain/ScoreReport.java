@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class ScoreReport {
 
-    @Id
+    @Id @GeneratedValue
     private Long reportId;
 
     @OneToOne(fetch= FetchType.LAZY)

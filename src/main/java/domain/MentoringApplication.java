@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 public class MentoringApplication { //멘토링 신청 엔티티
 
-    @Id
+    @Id @GeneratedValue
     private Long applicationId; //멘토링 신청 식별자
 
     @ManyToOne(fetch=FetchType.LAZY)
