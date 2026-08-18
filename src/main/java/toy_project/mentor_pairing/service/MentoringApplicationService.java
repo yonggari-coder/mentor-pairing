@@ -9,6 +9,8 @@ import toy_project.mentor_pairing.domain.Student;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
+import java.util.List;
+
 
 @Service
 @Transactional(readOnly=true)
@@ -17,6 +19,10 @@ public class MentoringApplicationService {
 
     private final MentoringApplicationRepository mentoringApplicationRepository;
     private final StudentRepository studentRepository;
+
+    public List<MentoringApplication> searchApplication(Long studentId){
+        return mentoringApplicationRepository.findByStudentId(studentId);
+    }
 
     @Transactional
     public Long applyMentoring(Long studentId, String subject, MentoringRole role){
