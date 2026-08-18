@@ -31,4 +31,8 @@ public class MentoringApplicationRepository {
                 .getResultList();
 
     }
+
+    public MentoringApplication findByApplicationId(Long id){
+        return em.find(MentoringApplication.class, id);
+    }
 }
