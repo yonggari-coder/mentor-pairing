@@ -1,0 +1,95 @@
+package toy_project.mentor_pairing.service;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import toy_project.mentor_pairing.domain.ApplicationStatus;
+import toy_project.mentor_pairing.domain.MentoringApplication;
+import toy_project.mentor_pairing.domain.MentoringRole;
+import toy_project.mentor_pairing.domain.Student;
+import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
+import toy_project.mentor_pairing.repository.StudentRepository;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@SpringBootTest
+@Transactional
+class MentoringApplicationServiceTest {
+
+    @Autowired private MentoringApplicationService mentoringApplicationService;
+
+    @Autowired private MentoringApplicationRepository mentoringApplicationRepository;
+    @Autowired private StudentRepository studentRepository;
+
+    @Test
+    public void 멘토링_정상신청() throws Exception {
+        //given
+        Student student = new Student();
+        student.setStudentId(10001L);
+        student.setName("이용균");
+        studentRepository.save(student);
+
+        mentoringApplicationService.applyMentoring(student.getStudentId(), "MATH", MentoringRole.MENTEE);
+        //when
+        List<MentoringApplication> applicationList = mentoringApplicationService.searchApplication(student.getStudentId());
+        MentoringApplication findMentoringApplication = applicationList.getFirst();
+
+        //then
+        Assertions.assertThat(findMentoringApplication.getSubject()).isEqualTo("MATH");
+        Assertions.assertThat(findMentoringApplication.getRole()).isEqualTo(MentoringRole.MENTEE);
+    }
+
+    @Test
+    public void 존재하지않는_학생() throws Exception {
+        //given
+        Student student = new Student();
+        student.setStudentId(10001L);
+        student.setName("이용균");
+        studentRepository.save(student);
+
+        //when //then
+        assertThrows(IllegalArgumentException.class, () ->{
+            mentoringApplicationService.applyMentoring(10002L, "MATH", MentoringRole.MENTOR);
+        });
+    }
+
+    @Test
+    public void 본인_신청_취소() throws Exception {
+        //given
+        Student student = new Student();
+        student.setStudentId(10001L);
+        student.setName("이용균");
+        studentRepository.save(student);
+        //when
+        mentoringApplicationService.applyMentoring(student.getStudentId(), "KOREAN", MentoringRole.MENTEE);
+        List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentId(student.getStudentId());
+        MentoringApplication findMentoringApplication = applicationList.getFirst();
+        mentoringApplicationService.cancelMentoring(student.getStudentId(), findMentoringApplication.getApplicationId());
+
+        //then
+        Assertions.assertThat(findMentoringApplication.getStatus()).isEqualTo(ApplicationStatus.CANCELED);
+    }
+
+    @Test
+    public void 타인_신청_취소() throws Exception {
+        //given
+        Student student = new Student();
+        student.setStudentId(10001L);
+        student.setName("이용균");
+        studentRepository.save(student);
+        //when
+        mentoringApplicationService.applyMentoring(student.getStudentId(), "ENGLISH", MentoringRole.MENTEE);
+        List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentId(student.getStudentId());
+        MentoringApplication findMentoringApplication = applicationList.getFirst();
+
+        //then
+        assertThrows(IllegalStateException.class, ()->{
+            mentoringApplicationService.cancelMentoring(10002L, findMentoringApplication.getApplicationId());
+        });
+
+    }
+}
