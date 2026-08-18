@@ -12,7 +12,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-class MentoringApplicationTest {
+class MentoringApplicationRepositoryTest {
 
     @Autowired private EntityManager em;
     @Autowired private MentoringApplicationRepository mentoringApplicationRepository;
