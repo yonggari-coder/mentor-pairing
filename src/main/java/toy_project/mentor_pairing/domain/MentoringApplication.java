@@ -27,4 +27,17 @@ public class MentoringApplication { //멘토링 신청 엔티티
 
     private Date createdAt; //기타 정보 - 생성일시.
 
+    protected MentoringApplication(){}
+
+    public MentoringApplication(Student applicant, String subject, MentoringRole role){
+        this.applicant = applicant;
+        this.subject = subject;
+        this.role = role;
+        this.status = ApplicationStatus.PENDING;
+        this.createdAt = new Date();
+    }
+
+    public void cancel(){
+        if(this.status == ApplicationStatus.PENDING) this.status = ApplicationStatus.CANCELED;
+    }
 }
