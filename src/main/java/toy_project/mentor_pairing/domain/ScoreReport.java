@@ -27,7 +27,8 @@ public class ScoreReport {
 
     protected ScoreReport(){}
 
-    public ScoreReport(int korScore, int engScore, int mathScore){
+    public ScoreReport(Student student, int korScore, int engScore, int mathScore){
+        this.student = student;
         this.korean = new SubjectScore(korScore);
         this.english = new SubjectScore(engScore);
         this.math = new SubjectScore(mathScore);

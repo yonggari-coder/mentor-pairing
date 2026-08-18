@@ -34,7 +34,9 @@ public class DomainTest {
     @Test
     public void 성적점수_합계산() throws Exception {
         //given
-        ScoreReport report = new ScoreReport(90, 85, 100);
+        Student student = new Student();
+        student.setStudentId(10001L);
+        ScoreReport report = new ScoreReport(student,90, 85, 100);
         //when
         int reportTotalScore = report.sumScore();
 
