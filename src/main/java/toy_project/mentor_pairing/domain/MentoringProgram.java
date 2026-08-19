@@ -2,12 +2,12 @@ package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
+
+//TODO : 생성자 NULL 검증 필요
 public class MentoringProgram {
     @Id @GeneratedValue
     private Long mentoringProgramId;
@@ -16,8 +16,8 @@ public class MentoringProgram {
     @JoinColumn(name="mentor_id", nullable=false)
     private Student mentor;
 
-    @ManyToOne
-    @JoinColumn(name="mentee_id")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="mentee_id", nullable=false)
     private Student mentee;
 
     @Enumerated(EnumType.STRING)
@@ -30,4 +30,30 @@ public class MentoringProgram {
 
     private LocalDateTime createdAt;
     private LocalDateTime endedAt;
+
+    protected MentoringProgram(){}
+
+    public MentoringProgram(Student mentor, Student mentee, Subject subject, String policyVersion){
+
+        if(mentor.getStudentId().equals(mentee.getStudentId())){
+            throw new IllegalStateException("자기 자신과 멘토링을 진행할 수 없습니다.");
+        }
+
+        this.mentor = mentor;
+        this.mentee = mentee;
+        this.subject = subject;
+        this.mentoringStatus = MatchingStatus.ACTIVE;
+        this.policyVersion= policyVersion;
+        this.createdAt = LocalDateTime.now();
+        this.endedAt = null;
+    }
+
+    public void end(){
+        if(mentoringStatus != MatchingStatus.ACTIVE) {
+            throw new IllegalStateException("이미 종료된 멘토링입니다.");
+        }
+
+        this.endedAt = LocalDateTime.now();
+        this.mentoringStatus = MatchingStatus.ENDED;
+    }
 }
