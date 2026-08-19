@@ -1,17 +1,30 @@
 package toy_project.mentor_pairing.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
-@Setter
 public class StudentProfile {
-    @Id
-    private String studentId;
-    private Date birthDate;
+
+    @Id @GeneratedValue
+    private Long profileId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="student_id",unique=true, nullable=false)
+    private Student student;
+
+    protected StudentProfile(){}
+
+    public StudentProfile(Student student, LocalDate birthDate){
+        this.student = student;
+        this.birthDate = birthDate;
+    }
+
+    private LocalDate birthDate;
+
+    public void changeBirthDate(LocalDate birthDate){
+        this.birthDate = birthDate;
+    }
 }
