@@ -1,26 +1,33 @@
 package toy_project.mentor_pairing.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 public class MentoringProgram {
-    @Id
+    @Id @GeneratedValue
     private Long mentoringProgramId;
 
-    private Long mentorId;
-    private Long menteeId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="mentor_id", nullable=false)
+    private Student mentor;
 
-    private String subject;
-    private String status;
+    @ManyToOne
+    @JoinColumn(name="mentee_id")
+    private Student mentee;
+
+    @Enumerated(EnumType.STRING)
+    private Subject subject;
+
+    @Enumerated(EnumType.STRING)
+    private MatchingStatus mentoringStatus;
 
     private String policyVersion;
-    private Date createdAt;
-    private Date endedAt;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime endedAt;
 }
