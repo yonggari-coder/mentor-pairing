@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import toy_project.mentor_pairing.domain.ApplicationStatus;
-import toy_project.mentor_pairing.domain.MentoringApplication;
-import toy_project.mentor_pairing.domain.MentoringRole;
-import toy_project.mentor_pairing.domain.Student;
+import toy_project.mentor_pairing.domain.*;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -33,13 +30,13 @@ class MentoringApplicationServiceTest {
         student.setName("이용균");
         studentRepository.save(student);
 
-        mentoringApplicationService.applyMentoring(student.getStudentId(), "MATH", MentoringRole.MENTEE);
+        mentoringApplicationService.applyMentoring(student.getStudentId(), Subject.MATH, MentoringRole.MENTEE);
         //when
         List<MentoringApplication> applicationList = mentoringApplicationService.searchApplication(student.getStudentId());
         MentoringApplication findMentoringApplication = applicationList.getFirst();
 
         //then
-        Assertions.assertThat(findMentoringApplication.getSubject()).isEqualTo("MATH");
+        Assertions.assertThat(findMentoringApplication.getSubject()).isEqualTo(Subject.MATH);
         Assertions.assertThat(findMentoringApplication.getRole()).isEqualTo(MentoringRole.MENTEE);
     }
 
@@ -53,7 +50,7 @@ class MentoringApplicationServiceTest {
 
         //when //then
         assertThrows(IllegalArgumentException.class, () ->{
-            mentoringApplicationService.applyMentoring(10002L, "MATH", MentoringRole.MENTOR);
+            mentoringApplicationService.applyMentoring(10002L, Subject.MATH, MentoringRole.MENTOR);
         });
     }
 
@@ -65,7 +62,7 @@ class MentoringApplicationServiceTest {
         student.setName("이용균");
         studentRepository.save(student);
         //when
-        mentoringApplicationService.applyMentoring(student.getStudentId(), "KOREAN", MentoringRole.MENTEE);
+        mentoringApplicationService.applyMentoring(student.getStudentId(), Subject.KOREAN, MentoringRole.MENTEE);
         List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentId(student.getStudentId());
         MentoringApplication findMentoringApplication = applicationList.getFirst();
         mentoringApplicationService.cancelMentoring(student.getStudentId(), findMentoringApplication.getApplicationId());
@@ -82,7 +79,7 @@ class MentoringApplicationServiceTest {
         student.setName("이용균");
         studentRepository.save(student);
         //when
-        mentoringApplicationService.applyMentoring(student.getStudentId(), "ENGLISH", MentoringRole.MENTEE);
+        mentoringApplicationService.applyMentoring(student.getStudentId(), Subject.ENGLISH, MentoringRole.MENTEE);
         List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentId(student.getStudentId());
         MentoringApplication findMentoringApplication = applicationList.getFirst();
 

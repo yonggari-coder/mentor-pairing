@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.MentoringApplication;
 import toy_project.mentor_pairing.domain.MentoringRole;
 import toy_project.mentor_pairing.domain.Student;
+import toy_project.mentor_pairing.domain.Subject;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -25,7 +26,7 @@ public class MentoringApplicationService {
     }
 
     @Transactional
-    public Long applyMentoring(Long studentId, String subject, MentoringRole role){
+    public Long applyMentoring(Long studentId, Subject subject, MentoringRole role){
         //엔티티 조회
         Student student = studentRepository.findOne(studentId);
 

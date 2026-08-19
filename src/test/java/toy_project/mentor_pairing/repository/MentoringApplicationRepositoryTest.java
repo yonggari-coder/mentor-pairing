@@ -26,7 +26,7 @@ class MentoringApplicationRepositoryTest {
         student.setName("yong");
         studentRepository.save(student);
 
-        MentoringApplication mentoringApplication = new MentoringApplication(student,"MATH", MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication = new MentoringApplication(student,Subject.MATH, MentoringRole.MENTOR);
         mentoringApplicationRepository.save(mentoringApplication);
         //when
         List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentId(student.getStudentId());
@@ -43,7 +43,7 @@ class MentoringApplicationRepositoryTest {
         student.setName("이용균");
         studentRepository.save(student);
 
-        MentoringApplication mentoringApplication = new MentoringApplication(student, "MATH", MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication = new MentoringApplication(student, Subject.MATH, MentoringRole.MENTOR);
         mentoringApplicationRepository.save(mentoringApplication);
         //when
         List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentName(student.getName());
@@ -60,7 +60,7 @@ class MentoringApplicationRepositoryTest {
         student.setName("이용균");
         studentRepository.save(student);
 
-        MentoringApplication mentoringApplication = new MentoringApplication(student, "MATH", MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication = new MentoringApplication(student, Subject.MATH, MentoringRole.MENTOR);
         mentoringApplicationRepository.save(mentoringApplication);
 
         //when
@@ -79,8 +79,8 @@ class MentoringApplicationRepositoryTest {
         student.setName("이용균");
         studentRepository.save(student);
 
-        MentoringApplication mentoringApplication1 = new MentoringApplication(student, "KOREAN", MentoringRole.MENTEE);
-        MentoringApplication mentoringApplication2 = new MentoringApplication(student, "MATH", MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication1 = new MentoringApplication(student, Subject.KOREAN, MentoringRole.MENTEE);
+        MentoringApplication mentoringApplication2 = new MentoringApplication(student, Subject.MATH, MentoringRole.MENTOR);
         mentoringApplicationRepository.save(mentoringApplication1);
         mentoringApplicationRepository.save(mentoringApplication2);
 

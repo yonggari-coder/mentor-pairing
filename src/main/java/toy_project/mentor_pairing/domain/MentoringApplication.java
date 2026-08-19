@@ -17,7 +17,8 @@ public class MentoringApplication { //멘토링 신청 엔티티
     @ManyToOne(fetch=FetchType.LAZY)
     private Student applicant; //신청자
 
-    private String subject; //신청 과목
+    @Enumerated(EnumType.STRING)
+    private Subject subject; //신청 과목
 
     @Enumerated(EnumType.STRING)
     private MentoringRole role;    //신청 역할
@@ -29,7 +30,7 @@ public class MentoringApplication { //멘토링 신청 엔티티
 
     protected MentoringApplication(){}
 
-    public MentoringApplication(Student applicant, String subject, MentoringRole role){
+    public MentoringApplication(Student applicant, Subject subject, MentoringRole role){
         this.applicant = applicant;
         this.subject = subject;
         this.role = role;
