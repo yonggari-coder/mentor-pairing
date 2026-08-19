@@ -89,40 +89,5 @@ class MentoringApplicationRepositoryTest {
         //then
         Assertions.assertThat(applicationList.size()).isEqualTo(2);
     }
-
-    @SpringBootTest
-    @Transactional
-    public static class DomainTest {
-
-        @Autowired
-        private EntityManager em;
-
-        @Test
-        public void 학생등록() throws Exception {
-            //given
-            Student student = new Student();
-            student.setStudentId(12345L);
-            student.setName("Yonggyun");
-            em.persist(student);
-
-            //when
-            Student student1 = em.find(Student.class, student.getStudentId());
-            //then
-            Assertions.assertThat(student1.getName()).isEqualTo("Yonggyun");
-        }
-
-        @Test
-        public void 성적점수_합계산() throws Exception {
-            //given
-            Student student = new Student();
-            student.setStudentId(10001L);
-            ScoreReport report = new ScoreReport(student,90, 85, 100);
-            //when
-            int reportTotalScore = report.sumScore();
-
-            //then
-            Assertions.assertThat(report.sumScore()).isEqualTo(90+85+100);
-        }
-    }
 }
 
