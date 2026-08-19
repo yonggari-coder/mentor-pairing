@@ -14,7 +14,6 @@ import java.util.List;
 @Transactional
 class MentoringApplicationRepositoryTest {
 
-    @Autowired private EntityManager em;
     @Autowired private MentoringApplicationRepository mentoringApplicationRepository;
     @Autowired private StudentRepository studentRepository;
 
@@ -88,6 +87,56 @@ class MentoringApplicationRepositoryTest {
         List<MentoringApplication> applicationList = mentoringApplicationRepository.findByStudentName(student.getName());
         //then
         Assertions.assertThat(applicationList.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void 멘토링_멘토추천리스트() throws Exception {
+        //given
+        Student student1 = new Student();
+        Student student2 = new Student();
+        Student student3 = new Student();
+        Student student4 = new Student();
+        Student student5 = new Student();
+
+        student1.setStudentId(10001L);
+        student1.setName("Lee");
+
+        student2.setStudentId(10002L);
+        student2.setName("Yong");
+
+        student3.setStudentId(10003L);
+        student3.setName("Gyun");
+
+        student4.setStudentId(10004L);
+        student4.setName("Kim");
+
+        student5.setStudentId(10005L);
+        student5.setName("Min");
+
+        studentRepository.save(student1);
+        studentRepository.save(student2);
+        studentRepository.save(student3);
+        studentRepository.save(student4);
+        studentRepository.save(student5);
+
+        MentoringApplication mentoringApplication1 = new MentoringApplication(student1, Subject.MATH, MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication2 = new MentoringApplication(student2, Subject.ENGLISH, MentoringRole.MENTOR);
+        MentoringApplication mentoringApplication3 = new MentoringApplication(student3, Subject.MATH, MentoringRole.MENTEE);
+        MentoringApplication mentoringApplication4 = new MentoringApplication(student4, Subject.MATH, MentoringRole.MENTOR);
+        mentoringApplication4.cancel();
+        MentoringApplication mentoringApplication5 = new MentoringApplication(student5, Subject.MATH, MentoringRole.MENTOR);
+
+        mentoringApplicationRepository.save(mentoringApplication1);
+        mentoringApplicationRepository.save(mentoringApplication2);
+        mentoringApplicationRepository.save(mentoringApplication3);
+        mentoringApplicationRepository.save(mentoringApplication4);
+        mentoringApplicationRepository.save(mentoringApplication5);
+        //when
+        List<MentoringApplication> mentorCandidates = mentoringApplicationRepository.findMentorCandidates(Subject.MATH, student5.getStudentId());
+
+        //then
+        Assertions.assertThat(mentorCandidates.size()).isEqualTo(1);
+        Assertions.assertThat(mentorCandidates.getFirst().getApplicant().getName()).isEqualTo("Lee");
     }
 }
 
