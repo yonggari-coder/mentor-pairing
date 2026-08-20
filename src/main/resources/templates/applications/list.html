@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>멘토링 신청 목록</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+            Mentor Pairing
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <h1 class="h2 mb-0">멘토링 신청 목록</h1>
+
+        <a class="btn btn-primary"
+           th:href="@{/applications/new}">
+            멘토링 신청
+        </a>
+    </div>
+
+    <div class="alert alert-success"
+         th:if="${param.applicationSuccess}">
+        멘토링 신청이 완료되었습니다.
+    </div>
+
+    <div class="alert alert-secondary"
+         th:if="${#lists.isEmpty(applications)}">
+        등록된 멘토링 신청이 없습니다.
+    </div>
+
+    <div class="card"
+         th:unless="${#lists.isEmpty(applications)}">
+
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover mb-0">
+
+                <thead class="table-dark">
+                <tr>
+                    <th>신청 ID</th>
+                    <th>학번</th>
+                    <th>이름</th>
+                    <th>과목</th>
+                    <th>역할</th>
+                    <th>상태</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="mentoringApplication : ${applications}">
+
+                    <td th:text="${mentoringApplication.applicationId}">
+                        1
+                    </td>
+
+                    <td th:text="${mentoringApplication.applicant.studentId}">
+                        10001
+                    </td>
+
+                    <td th:text="${mentoringApplication.applicant.name}">
+                        이용균
+                    </td>
+
+                    <td th:text="${mentoringApplication.subject}">
+                        MATH
+                    </td>
+
+                    <td th:text="${mentoringApplication.role}">
+                        MENTEE
+                    </td>
+
+                    <td>
+                        <span class="badge text-bg-secondary"
+                        th:text="${mentoringApplication.status}">
+                        WAITING
+                        </span>
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+
+        <a class="btn btn-outline-secondary"
+           th:href="@{/}">
+            홈으로
+        </a>
+
+        <a class="btn btn-dark"
+           th:href="@{/programs/match}">
+            멘토링 매칭
+        </a>
+
+    </div>
+
+</main>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

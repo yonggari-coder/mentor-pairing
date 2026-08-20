@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>멘토링 신청</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+            Mentor Pairing
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+
+    <div class="mx-auto" style="max-width: 600px">
+
+        <h1 class="h2 mb-4">멘토링 신청</h1>
+
+        <form th:action="@{/applications}"
+              th:object="${form}"
+              method="post"
+              class="card">
+
+            <div class="card-body">
+
+                <div class="mb-3">
+                    <label for="studentId"
+                           class="form-label">
+                        학번
+                    </label>
+
+                    <input id="studentId"
+                           type="number"
+                           class="form-control"
+                           th:field="*{studentId}"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="subject"
+                           class="form-label">
+                        신청 과목
+                    </label>
+
+                    <select id="subject"
+                            class="form-select"
+                            th:field="*{subject}"
+                            required>
+
+                        <option value="">
+                            과목을 선택하세요
+                        </option>
+
+                        <option th:each="subject : ${subjects}"
+                                th:value="${subject}"
+                                th:text="${subject}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role"
+                           class="form-label">
+                        신청 역할
+                    </label>
+
+                    <select id="role"
+                            class="form-select"
+                            th:field="*{role}"
+                            required>
+
+                        <option value="">
+                            역할을 선택하세요
+                        </option>
+
+                        <option th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}">
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+
+                <a class="btn btn-outline-secondary"
+                   th:href="@{/students}">
+                    취소
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    신청
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

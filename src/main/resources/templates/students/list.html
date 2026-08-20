@@ -40,6 +40,11 @@
         학생 프로필이 정상적으로 등록되었습니다.
     </div>
 
+    <div class="alert alert-success"
+         th:if="${param.scoreSuccess}">
+        학생 성적이 정상적으로 등록되었습니다.
+    </div>
+
     <!-- 등록된 학생이 없는 경우 -->
     <div class="alert alert-secondary"
          th:if="${#lists.isEmpty(students)}">
@@ -90,7 +95,16 @@
                            th:href="@{/student-profiles/new(studentId=${student.studentId})}">
                             프로필 등록
                         </a>
+                        <a class="btn btn-sm btn-outline-success"
+                           th:href="@{/score-reports/new(studentId=${student.studentId})}">
+                            성적 등록
+                        </a>
+                        <a class="btn btn-sm btn-outline-dark"
+                           th:href="@{/applications/new(studentId=${student.studentId})}">
+                            멘토링 신청
+                        </a>
                     </td>
+
 
                 </tr>
                 </tbody>
