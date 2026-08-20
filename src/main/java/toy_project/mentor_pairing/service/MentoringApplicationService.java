@@ -3,10 +3,7 @@ package toy_project.mentor_pairing.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toy_project.mentor_pairing.domain.MentoringApplication;
-import toy_project.mentor_pairing.domain.MentoringRole;
-import toy_project.mentor_pairing.domain.Student;
-import toy_project.mentor_pairing.domain.Subject;
+import toy_project.mentor_pairing.domain.*;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -58,5 +55,13 @@ public class MentoringApplicationService {
 
     public List<MentoringApplication> findApplications(){
         return mentoringApplicationRepository.findAll();
+    }
+
+    public List<MentoringApplication> findWaitingApplications(MentoringRole role) {
+        return mentoringApplicationRepository.findAll()
+                .stream()
+                .filter(application -> application.getRole() == role)
+                .filter(application -> application.getStatus() == ApplicationStatus.PENDING)
+                .toList();
     }
 }
