@@ -51,4 +51,9 @@ public class MentoringApplicationRepository {
                 .setParameter("menteeId", menteeId)
                 .getResultList();
     }
+
+    public List<MentoringApplication> findAll(){
+        return em.createQuery("select ma from MentoringApplication ma", MentoringApplication.class)
+                .getResultList();
+    }
 }

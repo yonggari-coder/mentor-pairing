@@ -55,4 +55,8 @@ public class MentoringApplicationService {
             throw new IllegalStateException("신청 ID와 일치하는 멘토링 신청이 없습니다.");
         }
     }
+
+    public List<MentoringApplication> findApplications(){
+        return mentoringApplicationRepository.findAll();
+    }
 }
