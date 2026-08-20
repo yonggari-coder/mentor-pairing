@@ -35,6 +35,11 @@
         </a>
     </div>
 
+    <div class="alert alert-success"
+         th:if="${param.profileSuccess}">
+        학생 프로필이 정상적으로 등록되었습니다.
+    </div>
+
     <!-- 등록된 학생이 없는 경우 -->
     <div class="alert alert-secondary"
          th:if="${#lists.isEmpty(students)}">
@@ -61,6 +66,7 @@
                     <th>번호</th>
                     <th>학번</th>
                     <th>이름</th>
+                    <th>관리</th>
                 </tr>
                 </thead>
 
@@ -77,6 +83,13 @@
 
                     <td th:text="${student.name}">
                         이용균
+                    </td>
+
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary"
+                           th:href="@{/student-profiles/new(studentId=${student.studentId})}">
+                            프로필 등록
+                        </a>
                     </td>
 
                 </tr>
