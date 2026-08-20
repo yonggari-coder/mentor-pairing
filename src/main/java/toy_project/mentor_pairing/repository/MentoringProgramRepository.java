@@ -29,4 +29,9 @@ public class MentoringProgramRepository {
                         .getResultList();
     }
 
+    public List<MentoringProgram> findAll(){
+        return em.createQuery("select mp from MentoringProgram mp", MentoringProgram.class)
+                .getResultList();
+    }
+
 }

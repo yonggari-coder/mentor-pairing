@@ -52,6 +52,10 @@ public class MentoringProgramService {
         return mentoringProgram.getMentoringProgramId();
     }
 
+    public List<MentoringProgram> findPrograms() {
+        return mentoringProgramRepository.findAll();
+    }
+
     private static @NonNull MentoringProgram getMentoringProgram(List<MentorRecommendation> mentorRecommendationList, MentoringApplication mentorApplication, MentoringApplication menteeApplication) {
         MentorRecommendation selectedMentorRecommendation = null;
 
@@ -72,4 +76,6 @@ public class MentoringProgramService {
                 );
         return mentoringProgram;
     }
+
+
 }
