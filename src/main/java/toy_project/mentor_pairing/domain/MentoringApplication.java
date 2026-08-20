@@ -41,4 +41,8 @@ public class MentoringApplication { //멘토링 신청 엔티티
     public void cancel(){
         if(this.status == ApplicationStatus.PENDING) this.status = ApplicationStatus.CANCELED;
     }
+
+    public void match(){
+        if(this.status == ApplicationStatus.PENDING) this.status = ApplicationStatus.MATCHED;
+    }
 }

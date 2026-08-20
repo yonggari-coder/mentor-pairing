@@ -59,7 +59,7 @@ public class MentoringProgramService {
         mentoringProgramRepository.save(mentoringProgram);
 
         //10. 멘티 신청을 MATCHED로 변경
-        menteeApplication.setStatus(ApplicationStatus.MATCHED);
+        menteeApplication.match();
         //11. 생성된 매칭 ID 리턴
         return mentoringProgram.getMentoringProgramId();
     }
