@@ -10,7 +10,7 @@ import toy_project.mentor_pairing.repository.MentoringProgramRepository;
 
 import java.util.List;
 
-@Service현
+@Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MentoringProgramService {
@@ -38,10 +38,7 @@ public class MentoringProgramService {
         //7. 멘티 기존 Active 매칭 확인
         Long menteeId = menteeApplication.getApplicant().getStudentId();
         List<MentoringProgram> menteeNowActiveMentoringList = mentoringProgramRepository.findByMenteeId(menteeId);
-        for(MentoringProgram mentoringNowProgram : menteeNowActiveMentoringList){
-            if(mentoringNowProgram.getSubject().equals(menteeApplication.getSubject())) throw new IllegalStateException("해당 과목으로 멘토링 진행중입니다.");
-            if(mentoringNowProgram.getMentor().getStudentId().equals(mentorApplication.getApplicant().getStudentId())) throw new IllegalStateException("이미 신청 멘토와 멘토링 진행중입니다.");
-        }
+        if(!menteeNowActiveMentoringList.isEmpty()) throw new IllegalStateException("이미 진행 중인 멘토링이 있습니다.");
         //8. 현재 추천 결과에 선택 멘토가 포함되는지 확인
         List<MentorRecommendation> mentorRecommendationList = mentorRecommendationService.recommend(menteeId, menteeApplication.getSubject());
         boolean mentorExistInRecommendation = false;
