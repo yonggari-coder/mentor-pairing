@@ -57,6 +57,10 @@ public class MentoringApplicationService {
         return mentoringApplicationRepository.findAll();
     }
 
+    public MentoringApplication findMenteeApplication(Long applicationId){
+        return mentoringApplicationRepository.findByApplicationId(applicationId);
+    }
+
     public List<MentoringApplication> findWaitingApplications(MentoringRole role) {
         return mentoringApplicationRepository.findAll()
                 .stream()
@@ -64,4 +68,9 @@ public class MentoringApplicationService {
                 .filter(application -> application.getStatus() == ApplicationStatus.PENDING)
                 .toList();
     }
+
+    public List<MentoringApplication> findMentorCandidates(Subject subject, Long menteeId){
+        return mentoringApplicationRepository.findMentorCandidates(subject, menteeId);
+    }
+
 }
