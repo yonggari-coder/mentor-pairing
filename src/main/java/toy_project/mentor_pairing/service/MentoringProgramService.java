@@ -1,6 +1,7 @@
 package toy_project.mentor_pairing.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.*;
@@ -41,26 +42,34 @@ public class MentoringProgramService {
         if(!menteeNowActiveMentoringList.isEmpty()) throw new IllegalStateException("이미 진행 중인 멘토링이 있습니다.");
         //8. 현재 추천 결과에 선택 멘토가 포함되는지 확인
         List<MentorRecommendation> mentorRecommendationList = mentorRecommendationService.recommend(menteeId, menteeApplication.getSubject());
-        boolean mentorExistInRecommendation = false;
-        for(MentorRecommendation mentorRecommendation : mentorRecommendationList){
-            if(mentorRecommendation.mentorId().equals(mentorApplication.getApplicant().getStudentId())){
-                mentorExistInRecommendation = true;
-            }
-        }
-        if(!mentorExistInRecommendation) throw new IllegalStateException("추천 멘토에 신청 멘토가 존재하지 않습니다.");
 
-        //9. 멘토링프로그램 생성 및 저장
-        MentoringProgram mentoringProgram = new MentoringProgram(
-                mentorApplication.getApplicant(),
-                menteeApplication.getApplicant(),
-                menteeApplication.getSubject(),
-                ""
-                );
+        MentoringProgram mentoringProgram = getMentoringProgram(mentorRecommendationList, mentorApplication, menteeApplication);
         mentoringProgramRepository.save(mentoringProgram);
 
         //10. 멘티 신청을 MATCHED로 변경
         menteeApplication.match();
         //11. 생성된 매칭 ID 리턴
         return mentoringProgram.getMentoringProgramId();
+    }
+
+    private static @NonNull MentoringProgram getMentoringProgram(List<MentorRecommendation> mentorRecommendationList, MentoringApplication mentorApplication, MentoringApplication menteeApplication) {
+        MentorRecommendation selectedMentorRecommendation = null;
+
+        for(MentorRecommendation mentorRecommendation : mentorRecommendationList){
+            if(mentorRecommendation.mentorId().equals(mentorApplication.getApplicant().getStudentId())){
+                selectedMentorRecommendation = mentorRecommendation;    // 추후 선택된 멘토에 대한 랭크 정보 등을 필요로 할때를 위해 남겨둠.
+                break;
+            }
+        }
+        if(selectedMentorRecommendation == null) throw new IllegalStateException("추천 멘토에 신청 멘토가 존재하지 않습니다.");
+
+        //9. 멘토링프로그램 생성 및 저장
+        MentoringProgram mentoringProgram = new MentoringProgram(
+                mentorApplication.getApplicant(),
+                menteeApplication.getApplicant(),
+                menteeApplication.getSubject(),
+                selectedMentorRecommendation.policyVersion()
+                );
+        return mentoringProgram;
     }
 }
