@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.*;
+import toy_project.mentor_pairing.exception.MentoringException;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -28,7 +29,7 @@ public class MentoringApplicationService {
         Student student = studentRepository.findOne(studentId);
 
         if(student == null){
-            throw new IllegalArgumentException("존재하지 않는 학생입니다.");
+            throw new MentoringException("존재하지 않는 학생입니다.");
         }
 
         MentoringApplication mentoringApplication = new MentoringApplication(student, subject, role);
@@ -45,11 +46,11 @@ public class MentoringApplicationService {
             if(mentoringApplication.getApplicant().getStudentId().equals(studentId)){
                 mentoringApplication.cancel();
             } else{
-                throw new IllegalStateException("권한이 없는 취소 요청입니다.");
+                throw new MentoringException("권한이 없는 취소 요청입니다.");
             }
 
         } else{
-            throw new IllegalStateException("신청 ID와 일치하는 멘토링 신청이 없습니다.");
+            throw new MentoringException("신청 ID와 일치하는 멘토링 신청이 없습니다.");
         }
     }
 

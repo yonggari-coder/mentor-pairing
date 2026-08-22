@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.ScoreReport;
 import toy_project.mentor_pairing.domain.Student;
+import toy_project.mentor_pairing.exception.MentoringException;
 import toy_project.mentor_pairing.repository.ScoreReportRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -26,7 +27,7 @@ public class ScoreReportService {
             int mathScore
     ){
         Student student = studentRepository.findOne(studentId);
-        if(student==null) throw new IllegalArgumentException("존재하지 않는 학생입니다.");
+        if(student==null) throw new MentoringException("존재하지 않는 학생입니다.");
 
        ScoreReport scoreReport = new ScoreReport(
                student,

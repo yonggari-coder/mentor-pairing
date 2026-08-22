@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.Student;
 import toy_project.mentor_pairing.domain.StudentProfile;
+import toy_project.mentor_pairing.exception.MentoringException;
 import toy_project.mentor_pairing.repository.StudentProfileRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
 
@@ -20,7 +21,7 @@ public class StudentProfileService {
     @Transactional
     public Long registerProfile(Long studentId, LocalDate birthDate) {
         Student student = studentRepository.findOne(studentId);
-        if (student == null) throw new IllegalArgumentException("존재하지 않는 학생입니다.");
+        if (student == null) throw new MentoringException("존재하지 않는 학생입니다.");
 
         StudentProfile profile = new StudentProfile(student, birthDate);
         studentProfileRepository.save(profile);

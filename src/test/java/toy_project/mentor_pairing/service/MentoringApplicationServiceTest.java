@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.*;
 import toy_project.mentor_pairing.repository.MentoringApplicationRepository;
 import toy_project.mentor_pairing.repository.StudentRepository;
+import toy_project.mentor_pairing.exception.MentoringException;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ class MentoringApplicationServiceTest {
         studentRepository.save(student);
 
         //when //then
-        assertThrows(IllegalArgumentException.class, () ->{
+        assertThrows(MentoringException.class, () ->{
             mentoringApplicationService.applyMentoring(10002L, Subject.MATH, MentoringRole.MENTOR);
         });
     }
@@ -84,7 +85,7 @@ class MentoringApplicationServiceTest {
         MentoringApplication findMentoringApplication = applicationList.getFirst();
 
         //then
-        assertThrows(IllegalStateException.class, ()->{
+        assertThrows(MentoringException.class, ()->{
             mentoringApplicationService.cancelMentoring(10002L, findMentoringApplication.getApplicationId());
         });
 

@@ -2,6 +2,8 @@ package toy_project.mentor_pairing.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import toy_project.mentor_pairing.exception.MentoringException;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,9 +37,7 @@ public class MentoringProgram {
 
     public MentoringProgram(Student mentor, Student mentee, Subject subject, String policyVersion){
 
-        if(mentor.getStudentId().equals(mentee.getStudentId())){
-            throw new IllegalStateException("자기 자신과 멘토링을 진행할 수 없습니다.");
-        }
+        if(mentor.getStudentId().equals(mentee.getStudentId())) throw new MentoringException("자기 자신과 멘토링을 진행할 수 없습니다.");
 
         this.mentor = mentor;
         this.mentee = mentee;
@@ -50,7 +50,7 @@ public class MentoringProgram {
 
     public void end(){
         if(mentoringStatus != MatchingStatus.ACTIVE) {
-            throw new IllegalStateException("이미 종료된 멘토링입니다.");
+            throw new MentoringException("이미 종료된 멘토링입니다.");
         }
 
         this.endedAt = LocalDateTime.now();
