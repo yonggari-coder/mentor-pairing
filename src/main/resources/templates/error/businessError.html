@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>오류</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light">
+
+<main class="container py-5">
+
+    <div class="mx-auto"
+         style="max-width: 600px">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h1 class="h3 text-danger mb-3">
+                    요청을 처리할 수 없습니다.
+                </h1>
+
+                <p class="text-secondary">
+                    오류 상태
+                </p>
+
+                <p class="fs-4 fw-bold"
+                   th:text="${status}">
+                    400
+                </p>
+
+                <p th:text="${message}">
+                    오류가 발생했습니다.
+                </p>
+
+            </div>
+
+            <div class="card-footer">
+
+                <button class="btn btn-outline-secondary"
+                        type="button"
+                        onclick="history.back()">
+                    이전 화면
+                </button>
+
+                <a class="btn btn-dark"
+                   th:href="@{/}">
+                    홈으로
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>
