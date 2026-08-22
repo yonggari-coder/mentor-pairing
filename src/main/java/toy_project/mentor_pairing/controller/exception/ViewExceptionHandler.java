@@ -17,7 +17,7 @@ public class ViewExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MentoringException.class)
     public String handleMentoringException(MentoringException exception, Model model){
-        model.addAttribute("mesesage", exception.getMessage());
+        model.addAttribute("message", exception.getMessage());
         model.addAttribute("status", 400);
         return "error/businessError";
     }
