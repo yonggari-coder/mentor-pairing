@@ -57,6 +57,16 @@ public class MentoringProgramService {
         return mentoringProgramRepository.findAll();
     }
 
+    @Transactional
+    public void endMentoringProgram(Long mentoringProgramId){
+        MentoringProgram program = mentoringProgramRepository.findByMatchingId(mentoringProgramId);
+        if(program == null){
+            throw new MentoringException("해당 프로그램을 찾을 수 없습니다.");
+        }
+
+        program.end();
+    }
+
     private static @NonNull MentoringProgram getMentoringProgram(List<MentorRecommendation> mentorRecommendationList, MentoringApplication mentorApplication, MentoringApplication menteeApplication) {
         MentorRecommendation selectedMentorRecommendation = null;
 
