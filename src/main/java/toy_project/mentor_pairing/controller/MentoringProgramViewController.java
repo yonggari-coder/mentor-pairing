@@ -75,4 +75,10 @@ public class MentoringProgramViewController {
 
         return "programs/list";
     }
+
+    @PostMapping("/{programId}/end")
+    public String end(@PathVariable Long programId){
+        mentoringProgramService.endMentoringProgram(programId);
+        return "redirect:/programs?endSuccess";
+    }
 }
