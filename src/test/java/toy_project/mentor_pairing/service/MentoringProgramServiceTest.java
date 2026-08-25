@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import toy_project.mentor_pairing.domain.*;
+import toy_project.mentor_pairing.exception.MentoringException;
 import toy_project.mentor_pairing.repository.*;
 
 import java.time.LocalDate;
@@ -75,4 +76,59 @@ class MentoringProgramServiceTest {
         Assertions.assertThat(matchedMentoringProgram.getFirst().getMentoringProgramId()).isEqualTo(mentoringProgramId);
     }
 
+    @Test
+    public void 멘토링_프로그램_정상종료() throws Exception {
+        //given
+        // 1. 멘티 정보
+        Student mentee = new Student();
+        mentee.setStudentId(10001L);
+        mentee.setName("이용균");
+        studentRepository.save(mentee);
+        ScoreReport scoreReport = new ScoreReport(mentee, 80, 80, 70);
+        scoreReportRepository.save(scoreReport);
+        StudentProfile studentProfile = new StudentProfile(mentee, LocalDate.of(2002, 5,5));
+        studentProfileRepository.save(studentProfile);
+        mentoringApplicationService.applyMentoring(mentee.getStudentId(), Subject.MATH, MentoringRole.MENTEE);
+
+        // 2. 멘토 후보
+        Student mentorApplicant1 = new Student();
+        mentorApplicant1.setStudentId(10002L);
+        mentorApplicant1.setName("양승원");
+        studentRepository.save(mentorApplicant1);
+        ScoreReport mentorScoreReport1 = new ScoreReport(mentorApplicant1, 80, 80, 90);
+        scoreReportRepository.save(mentorScoreReport1);
+        StudentProfile mentorApplicantProfile1 = new StudentProfile(mentorApplicant1, LocalDate.of(2001,4,12));
+        studentProfileRepository.save(mentorApplicantProfile1);
+        mentoringApplicationService.applyMentoring(mentorApplicant1.getStudentId(), Subject.MATH, MentoringRole.MENTOR);
+
+        Student mentorApplicant2 = new Student();
+        mentorApplicant2.setStudentId(10003L);
+        mentorApplicant2.setName("김재민");
+        studentRepository.save(mentorApplicant2);
+        ScoreReport mentorScoreReport2 = new ScoreReport(mentorApplicant2, 80, 80, 92);
+        scoreReportRepository.save(mentorScoreReport2);
+        StudentProfile mentorApplicantProfile2 = new StudentProfile(mentorApplicant2, LocalDate.of(2004,8,23));
+        studentProfileRepository.save(mentorApplicantProfile2);
+        mentoringApplicationService.applyMentoring(mentorApplicant2.getStudentId(), Subject.MATH, MentoringRole.MENTOR);
+
+        //3. 멘토링 프로그램 매칭 시도
+        MentoringApplication menteeApplication = mentoringApplicationService.searchApplication(mentee.getStudentId()).getFirst();
+        MentoringApplication mentorApplication = mentoringApplicationService.searchApplication(mentorApplicant1.getStudentId()).getFirst();
+        Long mentoringProgramId = mentoringProgramService.match(menteeApplication.getApplicationId(), mentorApplication.getApplicationId());
+        //when
+        mentoringProgramService.endMentoringProgram(mentoringProgramId);
+        MentoringProgram mentoringProgram = mentoringProgramRepository.findByMatchingId(mentoringProgramId);
+        //then
+        Assertions.assertThat(mentoringProgram.getMentoringStatus()).isEqualTo(MatchingStatus.ENDED);
+        Assertions.assertThat(mentoringProgram.getEndedAt()).isNotNull();
+    }
+
+    @Test
+    public void 비존재프로그램_종료상황() throws Exception {
+        //given //when //then
+        Assertions.assertThatThrownBy(()->mentoringProgramService.endMentoringProgram(11L))
+                .isInstanceOf(MentoringException.class)
+                .hasMessage("해당 프로그램을 찾을 수 없습니다.");
+
+    }
 }
