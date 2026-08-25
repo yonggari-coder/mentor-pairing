@@ -40,6 +40,11 @@
         멘토링 매칭이 완료되었습니다.
     </div>
 
+    <div class="alert alert-success"
+         th:if="${param.endSuccess}">
+        멘토링 프로그램이 종료되었습니다.
+    </div>
+
     <div class="alert alert-secondary"
          th:if="${#lists.isEmpty(programs)}">
         생성된 멘토링 프로그램이 없습니다.
@@ -59,6 +64,9 @@
                     <th>멘티 이름</th>
                     <th>멘토 학번</th>
                     <th>멘토 이름</th>
+                    <th>상태</th>
+                    <th>종료일</th>
+                    <th>관리</th>
                 </tr>
                 </thead>
 
@@ -84,7 +92,25 @@
                     <td th:text="${program.mentor.name}">
                         양승원
                     </td>
+                    <td th:text="${program.mentoringStatus}">
+                        ACTIVE
+                    </td>
 
+                    <td th:text="${program.endedAt != null? #temporals.format(program.endedAt, 'yyyy-MM-dd HH:mm'): '-'}">-</td>
+                    <td>
+                        <form th:if="${program.mentoringStatus.name() == 'ACTIVE'}"
+                              th:action="@{/programs/{id}/end(id=${program.mentoringProgramId})}"
+                              method="post">
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('멘토링을 종료하시겠습니까?')">
+                                종료
+                            </button>
+                        </form>
+
+                        <span th:if="${program.mentoringStatus.name() == 'ENDED'}" class="text-muted">종료됨</span>
+                    </td>
                 </tr>
                 </tbody>
 
