@@ -40,7 +40,7 @@
         학생 프로필이 정상적으로 등록되었습니다.
     </div>
 
-    <div class="alert alert-success"
+    <div class="alert alert-success"x
          th:if="${param.scoreSuccess}">
         학생 성적이 정상적으로 등록되었습니다.
     </div>
@@ -71,7 +71,8 @@
                     <th>번호</th>
                     <th>학번</th>
                     <th>이름</th>
-                    <th>관리</th>
+                    <th>상태</th>
+                    <th>등록</th>
                 </tr>
                 </thead>
 
@@ -89,7 +90,20 @@
                     <td th:text="${student.name}">
                         이용균
                     </td>
-
+                    <td>
+                        <span class="badge text-bg-success" th:if="${profileStatus[student.studentId]}">
+                            ✓ 프로필 등록 완료
+                        </span>
+                        <span class="badge text-bg-secondary" th:unless="${profileStatus[student.studentId]}">
+                            프로필 미등록
+                        </span>
+                        <span class="badge text-bg-success" th:if="${scoreStatus[student.studentId]}">
+                            ✓ 성적 등록 완료
+                        </span>
+                        <span class="badge text-bg-secondary" th:unless="${scoreStatus[student.studentId]}">
+                            성적 미등록
+                        </span>
+                    </td>
                     <td>
                         <a class="btn btn-sm btn-outline-primary"
                            th:href="@{/student-profiles/new(studentId=${student.studentId})}">
