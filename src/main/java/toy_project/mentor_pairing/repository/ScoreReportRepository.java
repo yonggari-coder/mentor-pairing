@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import toy_project.mentor_pairing.domain.ScoreReport;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class ScoreReportRepository {
@@ -20,12 +22,12 @@ public class ScoreReportRepository {
         return scoreReport;
     }
 
-    public ScoreReport findByStudentId(Long studentId){ //JPQL 사용하기.
+    public Optional<ScoreReport> findByStudentId(Long studentId){ //JPQL 사용하기.
         return em.createQuery(
-                "select sr from ScoreReport sr where sr.student.studentId = :studentId",
+                        "select sr from ScoreReport sr where sr.student.studentId = :studentId",
                         ScoreReport.class
                 )
                 .setParameter("studentId", studentId)
-                .getSingleResult();
+                .getResultList().stream().findAny();
     }
 }

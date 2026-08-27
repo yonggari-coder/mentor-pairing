@@ -64,7 +64,7 @@ public class MentorRecommendationService {
             Subject subject
     ){
 
-        ScoreReport scoreReport = scoreReportRepository.findByStudentId(student.getStudentId());
+        ScoreReport scoreReport = scoreReportRepository.findByStudentId(student.getStudentId()).get();
         StudentProfile studentProfile = studentProfileRepository.findByStudentId(student.getStudentId()).get();
 
         int koreanScore = 0;
