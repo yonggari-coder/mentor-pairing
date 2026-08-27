@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import toy_project.mentor_pairing.domain.Student;
 import toy_project.mentor_pairing.service.StudentService;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/students")
@@ -35,8 +39,19 @@ public class StudentViewController {
 
     @GetMapping
     public String studentList(Model model){
-        model.addAttribute("students", studentService.findStudents());
+        List<Student> students = studentService.findStudents();
 
+        Map<Long, Boolean> profileStatus = students.stream()
+                        .collect(Collectors.toMap(Student::getStudentId,
+                                student -> studentService.haveProfile(student.getStudentId()) ));
+
+        Map<Long, Boolean> scoreStatus = students.stream()
+                        .collect(Collectors.toMap(Student::getStudentId,
+                                student -> studentService.haveScoreReport(student.getStudentId())));
+
+        model.addAttribute("students", studentService.findStudents());
+        model.addAttribute("profileStatus", profileStatus);
+        model.addAttribute("scoreStatus", scoreStatus);
         return "students/list";
     }
 }
